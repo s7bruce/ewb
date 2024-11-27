@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container px-1 text-center">
+      <div class="row gx-2">
+        <div class="col">
+         <div class="p-6">
+            <form method="POST" action="/import/submit" enctype="multipart/form-data">
+                <p>Upload the csv file here...</p>
+                <div class="input-group mb-3">
+                    <input class="form-control" type="file" name="file" accept=".csv">
+                </div>
+                <div class="input-group mb-4">
+                    <input type="submit" class="btn btn-primary" value="Import">
+                    <input type="button" href="/import" class="btn btn-light" value="Cancel">
+                </div>
+            </form>
+            </div>
+         </div>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h1> Login </h1>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+      <div class="notification is-danger">
+          {{ messages[0] }}
+      </div>
+  {% endif %}
+  {% endwith %}
+  <form method="POST" action="/login">
+    <div class="mb-3">
+        <label for="InputEmail1" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="InputEmail1" name="email" aria-describedby="emailHelp">
+        <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+    </div>
+    <div class="mb-3">
+        <label for="InputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" id="InputPassword1" name="password">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}

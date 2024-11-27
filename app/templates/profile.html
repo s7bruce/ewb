@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Welcome to your profile!</h1>
+<p>This is your personal profile page where you can view and manage your information.</p>
+
+{% if name==name %}
+  <p>Username: {{ name }}</p>
+  <p>Email: {{ email }}</p>
+{% else %}
+  <p>Authentication information not available.</p>
+{% endif %}
+{% endblock %}

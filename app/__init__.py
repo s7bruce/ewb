@@ -1,6 +1,7 @@
 from flask import Flask, redirect, jsonify, render_template, request
 from app.models import db, User
 from app.routes.routes import routes_bp
+from app.routes.auth import auth_bp
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
@@ -19,6 +20,6 @@ def create_app():
         return User.query.get(int(user_id))
     
     app.register_blueprint(routes_bp)
-    app.register_blueprint(auth_blueprint)
+    app.register_blueprint(auth_bp)
     
     return app

@@ -3,13 +3,13 @@ from app.models import db, User, vexrobots
 from flask_login import login_user, login_required, logout_user
 from werkzeug.security import check_password_hash
 
-auth = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__)
 
-@auth.route('/login')
+@auth_bp.route('/login')
 def login():
     return render_template('login.html')
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth_bp.route('/login', methods=['GET', 'POST'])
 def login_post():
     if request.method == 'POST':
         email = request.form.get('email')
@@ -34,18 +34,18 @@ def login_post():
     email = request.form.get('email')
     return redirect(url_for('main.profile')), user, email 
 
-@auth.route('/profile')
+@auth_bp.route('/profile')
 @login_required
 def profile():
     email = request.form.get('email')
     name = request.form.get('name')
     return render_template('profile.html', name=name, email=email)
 
-@auth.route('/signup')
+@auth_bp.route('/signup')
 def signup():
     return render_template('signup.html')
 
-@auth.route('/signup', methods=['GET', 'POST'])
+@auth_bp.route('/signup', methods=['GET', 'POST'])
 def signup_post():
     email = request.form.get('email')
     name = request.form.get('name')
@@ -67,7 +67,7 @@ def signup_post():
     db.session.commit()
     return redirect(url_for('auth.login'))
 
-@auth.route('/logout')
+@auth_bp.route('/logout')
 @login_required
 def logout():
     logout_user()
