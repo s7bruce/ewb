@@ -19,7 +19,13 @@ def create_app():
     def load_user(user_id):
         return User.query.get(int(user_id))
     
-    app.register_blueprint(routes_bp)
-    app.register_blueprint(auth_bp)
     
+    with app.app_context():
+
+        app.register_blueprint(routes_bp)
+        app.register_blueprint(auth_bp)
+
+        db.create_all()
+
+
     return app

@@ -45,3 +45,16 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+
+class file(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cust_name = db.Column(db.String)
+    cust_unit = db.Column(db.Integer)
+
+    def to_dict(self):
+        return {
+            "id":self.id,
+            "cust_name":self.cust_name,
+            "cust_unit":self.cust_unit
+        }
