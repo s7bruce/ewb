@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+        {% endwith %}
+
+<form method="POST" action="/customer_add">
+    <div class="mb-3">
+        <label for="profile_picture" class="form-label">Profile Picture</label>
+        <input type="file" class="form-control" id="profile_picture" name="profile_picture">
+    </div>
+                    <div class="mb-3">
+                        <label for="InputName1" class="form-label">Name</label>
+                        <input type="name" class="form-control" id="InputName1" name="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="InputEmail1" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="InputEmail1" name="email" aria-describedby="emailHelp">
+                        <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="InputPhone1" class="form-label">Phone Number (Optional)</label>
+                        <input type="phone" class="form-control" id="InputPhone1" name="phone">
+                    </div>
+                    <div class="mb-3">
+                        <label for="InputAddress1" class="form-label">Address</label>
+                        <input type="address" class="form-control" id="InputAddress1" name="address">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+
+{% endblock %}

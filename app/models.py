@@ -39,6 +39,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
+    # profilepic = db.Column(db.String)
 
     def set_password(self, password):
        self.password = generate_password_hash(password)
@@ -58,3 +59,14 @@ class file(db.Model):
             "cust_name":self.cust_name,
             "cust_unit":self.cust_unit
         }
+    
+class Customer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    phone = db.Column(db.String(20), nullable=True)
+    address = db.Column(db.String(200), nullable=True)
+    profile_picture = db.Column(db.LargeBinary, nullable=True)
+
+    def __repr__(self):
+        return f'<Customer {self.name}>'

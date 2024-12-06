@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ customer.name }} - Details</title>
+</head>
+<body>
+    <h1>{{ customer.name }} - Details</h1>
+
+    {% if customer.profile_picture %}
+            <img src="{{ url_for('routes_bp.customer_image', id=customer.id) }}" alt="Profile Picture" width="100">
+    {% else %}
+        <img src="{{ url_for('static', filename='default_profile_picture.png') }}" alt="Default Profile Picture" width="100">
+    {% endif %}
+
+
+    <p><strong>Email:</strong> {{ customer.email }}</p>
+    <p><strong>Phone:</strong> {{ customer.phone }}</p>
+    <p><strong>Address:</strong> {{ customer.address }}</p>
+
+
+    <a href="{{ url_for('routes_bp.customer_edit', id=customer.id) }}">Edit Customer</a><br>
+
+    <a href="{{ url_for('routes_bp.customers') }}">Back to customer list</a>
+</body>
+</html>
+
+
+{% endblock %}

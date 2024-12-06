@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customers</title>
+</head>
+<body>
+    <h1>Customer List</h1>
+
+    <!-- Search form -->
+    <form method="get" action="/customers">
+        <input type="text" name="search" value="{{ search_term }}" placeholder="Search by name or email">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Display list of customers -->
+    <ul>
+        {% for customer in customers %}
+            <li>
+                <a href="{{ url_for('routes_bp.customer_detail', id=customer.id) }}">
+
+                    {{ customer.name }} ({{ customer.email }})
+                </a>
+            </li>
+        {% else %}
+            <li>No customers found.</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
+
+
+{% endblock %}

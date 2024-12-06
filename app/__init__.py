@@ -1,5 +1,5 @@
 from flask import Flask, redirect, jsonify, render_template, request
-from app.models import db, User
+from app.models import db, User, Customer
 from app.routes.routes import routes_bp
 from app.routes.auth import auth_bp
 from flask_sqlalchemy import SQLAlchemy
