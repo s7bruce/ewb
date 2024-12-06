@@ -3,4 +3,7 @@ flask_sqlalchemy
 flask_login
 pandas
 numpy
-werkzeug.security
+pillow
+Image
+io
+

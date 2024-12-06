@@ -7,9 +7,8 @@ from flask_login import login_manager, current_user, login_required
 import os
 from werkzeug.utils import secure_filename
 from datetime import datetime
-# from PIL import Image
+from PIL import Image
 import io
-
 
 routes_bp = Blueprint(
     'routes_bp', __name__,
