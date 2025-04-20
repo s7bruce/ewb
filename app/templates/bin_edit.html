@@ -6,10 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Customer</title>
+    <title>Edit Bin</title>
 </head>
 <body>
-    <h1>Edit Customer: {{ customer.name }}</h1>
+    <h1>Edit Bin: {{ bin.name }}</h1>
 
     <!-- Flash messages for success or errors -->
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -25,21 +25,18 @@
     <!-- Form for editing customer details -->
     <form method="POST" enctype="multipart/form-data">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" value="{{ customer.name }}" required><br>
+        <input type="text" id="name" name="name" value="{{ bin.name }}" required><br>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ customer.email }}" required><br>
-
-        <label for="phone">Phone:</label>
-        <input type="text" id="phone" name="phone" value="{{ customer.phone }}"><br>
+        <label for="binNo">binNo:</label>
+        <input type="text" id="binNo" name="binNo" value="{{ binNo.email }}" required><br>
 
         <label for="address">Address:</label>
-        <textarea id="address" name="address">{{ customer.address }}</textarea><br>
+        <textarea id="address" name="address">{{ bin.address }}</textarea><br>
 
         <label for="profile_picture">Profile Picture:</label>
         <input type="file" id="profile_picture" name="profile_picture"><br>
 
-        {% if customer.profile_picture %}
+        {% if bin.picture %}
             <img src="{{ url_for('static', filename='profile_pics/' + customer.profile_picture) }}" alt="Profile Picture" width="100">
         {% endif %}
 

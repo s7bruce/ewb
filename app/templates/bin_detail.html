@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ bin.name }} - Details</title>
+</head>
+<body>
+    <h1>{{ bin.name }} - Details</h1>
+
+    {% if bin.profile_picture %}
+            <img src="{{ url_for('routes_bp.bin_image', id=bin.id) }}" alt="Profile Picture" width="100">
+    {% else %}
+        <img src="{{ url_for('static', filename='default_profile_picture.png') }}" alt="Default Profile Picture" width="100">
+    {% endif %}
+
+
+    <p><strong>BinNo:</strong> {{ bin.binNo }}</p>
+    <p><strong>Address:</strong> {{ bin.address }}</p>
+
+
+    <a href="{{ url_for('routes_bp.bin_edit', id=bin.id) }}">Edit Bin</a><br>
+
+    <a href="{{ url_for('routes_bp.bins') }}">Back to bin list</a>
+</body>
+</html>
+
+
+{% endblock %}

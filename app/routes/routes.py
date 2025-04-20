@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, Blueprint, jsonify, flash, url_for, current_app, send_file, Response
-from app.models import db, vexrobots, User, Customer
+from app.models import db, vexrobots, User, Bins
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 from sqlalchemy import func
@@ -134,26 +134,26 @@ def parse_csv(file_path):
 
 
 
-@routes_bp.route("/customers", methods=['GET'])
+@routes_bp.route("/bins", methods=['GET'])
 @login_required
 def customers():
     search_term = request.args.get('search', '', type=str)
-    query = Customer.query
+    query = Bins.query
     if search_term:
         query = query.filter(
-            Customer.name.ilike(f'%{search_term}%'),
-            Customer.name.ilike(f'%{search_term}%')
+            Bins.name.ilike(f'%{search_term}%'),
+            Bins.name.ilike(f'%{search_term}%')
         )
 
-    customers = query.all()
+    bins = query.all()
 
-    return render_template("customers.html", customers=customers, search_term=search_term)
+    return render_template("bins.html", bins=bins, search_term=search_term)
 
-@routes_bp.route('/customers/<int:id>', methods=['GET'])
+@routes_bp.route('/bins/<int:id>', methods=['GET'])
 @login_required
-def customer_detail(id):
-    customer = Customer.query.get_or_404(id)
-    return render_template('customer_detail.html', customer=customer)
+def bin_detail(id):
+    bin = Bins.query.get_or_404(id)
+    return render_template('bin_detail.html', bin=bin)
 
 @routes_bp.route('/customer_add', methods=['GET', 'POST'])
 @login_required
