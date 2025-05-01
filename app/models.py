@@ -63,9 +63,9 @@ class file(db.Model):
 class Bins(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    binNo = db.Column(db.String(120), unique=True, nullable=False)
+    binNo = db.Column(db.Integer, unique=True, nullable=False)
     address = db.Column(db.String(200), nullable=True)
     picture = db.Column(db.LargeBinary, nullable=True)
 
     def __repr__(self):
-        return f'<Customer {self.name}>'
+        return f'<Bins {self.name}>'

@@ -136,7 +136,7 @@ def parse_csv(file_path):
 
 @routes_bp.route("/bins", methods=['GET'])
 @login_required
-def customers():
+def bins():
     search_term = request.args.get('search', '', type=str)
     query = Bins.query
     if search_term:
@@ -155,90 +155,98 @@ def bin_detail(id):
     bin = Bins.query.get_or_404(id)
     return render_template('bin_detail.html', bin=bin)
 
-@routes_bp.route('/customer_add', methods=['GET', 'POST'])
+@routes_bp.route('/bin_add', methods=['GET', 'POST'])
 @login_required
-def customer_add():
+def bin_add():
     if request.method == 'POST':
         # Retrieve form data
         name = request.form.get('name')
-        email = request.form.get('email')
-        phone = request.form.get('phone')
+        binNo = request.form.get('binNo')
         address = request.form.get('address')
 
         # Retrieve the uploaded file
-        profile_picture = None
-        file = request.files.get('profile_picture')
+        picture = None
+        file = request.files.get('picture')
 
         if file and allowed_file(file.filename):
             # Read the image file into memory and store as binary data
             img = Image.open(file.stream)  # Open the image from the stream
             img_byte_array = io.BytesIO()  # Create a byte array to hold the image data
             img.save(img_byte_array, format='PNG')  # Save image to byte array in PNG format
-            profile_picture = img_byte_array.getvalue()  # Get the binary data
+            picture = img_byte_array.getvalue()  # Get the binary data
 
         # Check if a customer with the same email already exists
-        existing_customer = Customer.query.filter_by(email=email).first()
-        if existing_customer:
-            flash('A customer with this email already exists.', 'error')
+        existing_bin = Bins.query.filter_by(address=address).first()
+        if existing_bin:
+            flash('A bin with this address already exists.', 'error')
             return redirect(url_for('routes_bp.customer_add'))
 
         # Create a new customer instance
-        new_cust = Customer(
+        new_bin = Bins(
             name=name,
-            email=email,
-            phone=phone,
+            binNo=binNo,
             address=address,
-            profile_picture=profile_picture  # Store the image binary data in the DB
+            picture=picture  # Store the image binary data in the DB
         )
 
         # Add to the database
-        db.session.add(new_cust)
+        db.session.add(new_bin)
         db.session.commit()
         flash('Customer added successfully!', 'success')
 
-        return redirect(url_for('routes_bp.customers'))
+        return redirect(url_for('routes_bp.bins'))
 
-    return render_template('customer_add.html')
+    return render_template('bin_add.html')
 
-@routes_bp.route('/customer_edit/<int:id>', methods=['GET', 'POST'])
+@routes_bp.route('/bin_edit/<int:id>', methods=['GET', 'POST'])
 @login_required
-def customer_edit(id):
-    customer = Customer.query.get_or_404(id)
+def bin_edit(id):
+    bin = Bins.query.get_or_404(id)
     
     if request.method == 'POST':
         # Retrieve form data
-        customer.name = request.form.get('name')
-        customer.email = request.form.get('email')
-        customer.phone = request.form.get('phone')
-        customer.address = request.form.get('address')
+        bin.name = request.form.get('name')
+        bin.binNo = request.form.get('binNo')
+        bin.address = request.form.get('address')
+        bin.picture = request.form.get('picture')
 
         # Retrieve and handle the profile picture if uploaded
-        file = request.files.get('profile_picture')
+        file = request.files.get('picture')
 
         if file and allowed_file(file.filename):
             # Read the image file into memory and store as binary data
             img = Image.open(file.stream)  # Open the image from the stream
             img_byte_array = io.BytesIO()  # Create a byte array to hold the image data
             img.save(img_byte_array, format='PNG')  # Save image to byte array in PNG format
-            customer.profile_picture = img_byte_array.getvalue()  # Update the binary data in the DB
+            bin.picture = img_byte_array.getvalue()  # Update the binary data in the DB
 
         # Check if the new email is already taken by another customer
-        if Customer.query.filter(Customer.email == customer.email, Customer.id != id).first():
-            flash('This email is already associated with another customer.', 'error')
-            return redirect(url_for('routes_bp.customer_edit', id=customer.id))
+        if Bins.query.filter(bin.binNo == bin.binNo, bin.id != id).first():
+            flash('This binNo is already associated with another bin.', 'error')
+            return redirect(url_for('routes_bp.bin_edit', id=bin.id))
 
         # Commit the changes to the database
         db.session.commit()
-        flash('Customer updated successfully!', 'success')
+        flash('Bin updated successfully!', 'success')
 
-        return redirect(url_for('routes_bp.customer_detail', id=customer.id))
+        return redirect(url_for('routes_bp.bin_detail', id=bin.id))
 
-    return render_template('customer_edit.html', customer=customer)
+    return render_template('bin_edit.html', bin=bin)
 
-@routes_bp.route('/customer_image/<int:id>')
+@routes_bp.route('/bin_image/<int:id>')
 def customer_image(id):
-    customer = Customer.query.get(id)
-    if customer and customer.profile_picture:
+    bin = Bins.query.get(id)
+    if bin and bin.picture:
         # Create a byte stream response with the binary data
-        return Response(customer.profile_picture, mimetype='image/png')
+        return Response(bin.picture, mimetype='image/png')
     return send_file('static/default_profile_picture.png', mimetype='image/png')  # Default image if none exists
+
+
+@routes_bp.route('/bin_delete/<int:id>', methods=['POST'])
+@login_required
+def bin_delete(id):
+    bin = Bins.query.get_or_404(id)
+    db.session.delete(bin)
+    db.session.commit()
+    flash('Bin deleted successfully!', 'success')
+    return redirect(url_for('routes_bp.bins'))

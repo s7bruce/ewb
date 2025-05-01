@@ -28,22 +28,22 @@
         <input type="text" id="name" name="name" value="{{ bin.name }}" required><br>
 
         <label for="binNo">binNo:</label>
-        <input type="text" id="binNo" name="binNo" value="{{ binNo.email }}" required><br>
+        <input type="text" id="binNo" name="binNo" value="{{ bin.binNo }}" required><br>
 
         <label for="address">Address:</label>
         <textarea id="address" name="address">{{ bin.address }}</textarea><br>
 
-        <label for="profile_picture">Profile Picture:</label>
-        <input type="file" id="profile_picture" name="profile_picture"><br>
+        <label for="picture">Picture:</label>
+        <input type="file" id="picture" name="picture"><br>
 
         {% if bin.picture %}
-            <img src="{{ url_for('static', filename='profile_pics/' + customer.profile_picture) }}" alt="Profile Picture" width="100">
+            <img src="{{ url_for('static', filename='picture/' + bin.picture) }}" alt="Picture" width="100">
         {% endif %}
 
         <button type="submit">Save Changes</button>
     </form>
 
-    <a href="{{ url_for('routes_bp.customer_detail', id=customer.id) }}">Back to Customer Details</a>
+    <a href="{{ url_for('routes_bp.bin_detail', id=bin.id) }}">Back to Bin Details</a>
 </body>
 </html>
 

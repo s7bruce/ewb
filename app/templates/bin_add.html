@@ -9,24 +9,21 @@
         {% endif %}
         {% endwith %}
 
-<form method="POST" action="/customer_add">
+<form method="POST" action="/bin_add">
     <div class="mb-3">
-        <label for="profile_picture" class="form-label">Profile Picture</label>
-        <input type="file" class="form-control" id="profile_picture" name="profile_picture">
+        <label for="picture" class="form-label">Picture</label>
+        <input type="file" class="form-control" id="picture" name="picture">
     </div>
                     <div class="mb-3">
                         <label for="InputName1" class="form-label">Name</label>
                         <input type="name" class="form-control" id="InputName1" name="name">
                     </div>
                     <div class="mb-3">
-                        <label for="InputEmail1" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="InputEmail1" name="email" aria-describedby="emailHelp">
+                        <label for="InputBinNo1" class="form-label">Bin Number</label>
+                        <input type="binNo" class="form-control" id="InputBinNo1" name="binNo">
                         <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
                     </div>
-                    <div class="mb-3">
-                        <label for="InputPhone1" class="form-label">Phone Number (Optional)</label>
-                        <input type="phone" class="form-control" id="InputPhone1" name="phone">
-                    </div>
+                    
                     <div class="mb-3">
                         <label for="InputAddress1" class="form-label">Address</label>
                         <input type="address" class="form-control" id="InputAddress1" name="address">

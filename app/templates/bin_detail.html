@@ -11,8 +11,8 @@
 <body>
     <h1>{{ bin.name }} - Details</h1>
 
-    {% if bin.profile_picture %}
-            <img src="{{ url_for('routes_bp.bin_image', id=bin.id) }}" alt="Profile Picture" width="100">
+    {% if bin.picture %}
+            <img src="{{ url_for('routes_bp.bin_image', id=bin.id) }}" alt="Picture" width="100">
     {% else %}
         <img src="{{ url_for('static', filename='default_profile_picture.png') }}" alt="Default Profile Picture" width="100">
     {% endif %}
@@ -20,11 +20,18 @@
 
     <p><strong>BinNo:</strong> {{ bin.binNo }}</p>
     <p><strong>Address:</strong> {{ bin.address }}</p>
-
+    <gmp-map center="-9.379621505737305,142.624267578125" zoom="14" map-id="DEMO_MAP_ID">
+        <gmp-advanced-marker position="-9.379621505737305,142.624267578125" title="My location"></gmp-advanced-marker>
+      </gmp-map>
 
     <a href="{{ url_for('routes_bp.bin_edit', id=bin.id) }}">Edit Bin</a><br>
 
     <a href="{{ url_for('routes_bp.bins') }}">Back to bin list</a>
+
+    <!-- Add Delete Bin Button -->
+    <form action="{{ url_for('routes_bp.bin_delete', id=bin.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this bin?');" style="display:inline;">
+        <button type="submit" style="color: red;">Delete Bin</button>
+</form>
 </body>
 </html>
 
