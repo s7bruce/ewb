@@ -32,6 +32,9 @@
     <form action="{{ url_for('routes_bp.bin_delete', id=bin.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this bin?');" style="display:inline;">
         <button type="submit" style="color: red;">Delete Bin</button>
 </form>
+<div>
+<img src="{{ url_for('static', filename='googlemap.png') }}" alt="google map" width="600">
+</div>
 </body>
 </html>
 

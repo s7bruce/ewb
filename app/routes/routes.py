@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, Blueprint, jsonify, flash, url_for, current_app, send_file, Response
-from app.models import db, vexrobots, User, Bins
+from app.models import db, bindata, User, Bins
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 from sqlalchemy import func
@@ -54,36 +54,31 @@ def profile():
 
 @routes_bp.route('/api/inventory')
 @login_required
-def get_vexrobots():
-    robots = db.session.query(
-        vexrobots.id,
-        vexrobots.name,
-        vexrobots.sku,
-        vexrobots.desc,
-        vexrobots.kit,
-        vexrobots.kit_qty,
-        vexrobots.price,
-        func.count(vexrobots.kit_qty).label('total_kit_qty'),
-        func.count(vexrobots.id).label('total_db_qty')
-    ).group_by(vexrobots.id, vexrobots.name, vexrobots.sku, vexrobots.desc, vexrobots.kit, vexrobots.kit_qty, vexrobots.price).all()
+def get_bindata():
+    binsdata = db.session.query(
+        binsdata.id,
+        binsdata.timestamp,
+        binsdata.trashcount,
+        binsdata.weight
+    ).group_by(binsdata.id).all()
     
-    robots_list = [{
-        "id": robot.id,
-        "name": robot.name,
-        "sku": robot.sku,
-        "desc": robot.desc,
-        "kit": robot.kit,
-        "kit_qty": robot.kit_qty,
-        "price": robot.price,
-        "total_kit_qty": robot.total_kit_qty,
-        "total_db_qty": robot.total_db_qty
-    } for robot in robots]
-    return jsonify(robots_list)
+    bins_list = [{
+        "id": binsdata.id,
+        "timestamp": binsdata.timestamp,
+        "trashcount": binsdata.trashcount,
+        "weight": binsdata.weight
+    } for binsdata in binsdata]
+    return jsonify(bins_list)
 
 @routes_bp.route('/inventory')
 @login_required
-def vexrobots_page():
-    return render_template('inventory.html')
+def binsdata_page():
+    bin = db.session.query(
+        bindata.timestamp,
+        bindata.trashcount,
+        bindata.weight
+    ).group_by(bindata.id).all()
+    return render_template('inventory.html', bin=bin)
 
 @routes_bp.route("/import")
 @login_required
@@ -105,30 +100,20 @@ def parse_csv(file_path):
     csv_data = pd.read_csv(file_path)
 
     for i, row in csv_data.iterrows():
-        existing_robot = db.session.query(vexrobots).filter_by(uid=row['uid']).first()
+        existing_bin = db.session.query(bindata).first()
         
-        if existing_robot:
-            existing_robot.id = row['id']
-            existing_robot.kit = row['kit']
-            existing_robot.kit_qty = row['kit qty']
-            existing_robot.name = row['name']
-            existing_robot.cat = row['category']
-            existing_robot.sku = row['sku']
-            existing_robot.desc = row['desc']
-            existing_robot.price = row['price']
+        if existing_bin:
+            existing_bin.timestamp = row['Timestamp']
+            existing_bin.trashcount = row['Final Trash Count']
+            existing_bin.weight = row['Final Weight (g)']
         else:
-            robot = vexrobots(
-                uid=row['uid'],
-                id=row['id'], 
-                kit=row['kit'], 
-                kit_qty=row['kit qty'], 
-                name=row['name'], 
-                cat=row['category'], 
-                sku=row['sku'],
-                desc=row['desc'],
-                price=row['price']
+            binsdata = bindata(
+                timestamp=row['Timestamp'],
+                trashcount=row['Final Trash Count'],
+                weight=row['Final Weight (g)']
+                
             )
-            db.session.add(robot)
+            db.session.add(binsdata)
     db.session.commit()
     return redirect('/import')
 

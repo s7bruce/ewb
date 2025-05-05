@@ -10,28 +10,18 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
-class vexrobots(db.Model):
-    uid = db.Column(db.Integer, primary_key=True)
-    id = db.Column(db.Integer)
-    kit = db.Column(db.Integer)
-    kit_qty = db.Column(db.Integer)
-    name = db.Column(db.String)
-    cat = db.Column(db.String)
-    sku = db.Column(db.String)
-    desc = db.Column(db.String)
-    price = db.Column(db.Float)
+class bindata(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.String, default=0)
+    trashcount = db.Column(db.Integer, default=0)
+    weight = db.Column(db.Float, default=0)
 
     def to_dict(self):
         return {
-            "uid":self.uid,
             "id": self.id, 
-            "kit": self.kit,
-            "kit_qty": self.kit_qty,
-            "name": self.name,
-            "cat": self.cat,
-            "sku": self.sku,
-            "desc": self.desc,
-            "price": self.price        
+            "Timestamp": self.timestamp,
+            "Final Trash Count": self.trashcount,
+            "Final Weight (g)": self.weight      
         }
 
 class User(UserMixin, db.Model):

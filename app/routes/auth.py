@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, Blueprint, url_for, flash
-from app.models import db, User, vexrobots
+from app.models import db, User
 from flask_login import login_user, login_required, logout_user
 from werkzeug.security import check_password_hash
 
